@@ -31,7 +31,6 @@ jobs:
 
           git checkout -b "$temp_branch" "origin/$target"
           
-          echo "-------"
 
           conflicts=$(git merge origin/$base | grep CONFLICT| wc -l)
           if [ "$conflicts" -gt 0 ]
@@ -41,8 +40,7 @@ jobs:
             git push origin "${temp_branch}:${temp_branch}"
             gh pr create --title "Merge $base down to $target" --body "Automated action for Merging down" -B "$target"
           fi
-          
-          echo "-------"
+
  
 
         env:
