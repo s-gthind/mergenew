@@ -39,14 +39,13 @@ jobs:
           git checkout -b "$temp_branch" "origin/$target"
 
           conflicts=$(git merge origin/$base | grep CONFLICT| wc -l)
-          if [  conflicts -gt 0 ]
-	  then
-            echo "There is a merge conflict. Aborting"
-	    gh pr comment "$PR" --body "There are conflicts while merging the $base down to $target. Please resolve the conflicts manually"
-	  else
-	    git push origin "${temp_branch}:${temp_branch}"
- 	    gh pr create --title "Merge $base down to $target" -B "$target"
-          fi  
+          if [ "$conflicts" -gt 0 ]
+          then
+            gh pr comment "$PR" --body "There are conflicts while merging the $base down to $target. Please resolve the conflicts manually. "
+          else
+            git push origin "${temp_branch}:${temp_branch}"
+          fi
+ 
 
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
