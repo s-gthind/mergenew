@@ -29,7 +29,7 @@ jobs:
             exit 0
           fi
           echo $target
-          temp_branch="merge_${base}_${target}_${pr_number}"
+          temp_branch="merge_${base}_${target}_$PR"
           echo $temp_branch
 
 
