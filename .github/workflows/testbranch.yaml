@@ -19,6 +19,20 @@ jobs:
           echo "${GITHUB_REF}"
           base=${GITHUB_REF}
           echo $base
+          if [[ "$base" == release_candidate ]]
+          then
+            target=preview
+          elif [[ "$base" == preview ]]
+          then
+            target=develop
+          else
+            exit 0
+          fi
+          echo $target
+
+
+
+
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
          PR: ${{ github.event.number }}
