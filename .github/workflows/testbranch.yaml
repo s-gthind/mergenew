@@ -24,6 +24,7 @@ jobs:
             target=develop
           else
             exit 0
+          fi
 
           temp_branch="merge_${base}_${target}_$PR"
 
