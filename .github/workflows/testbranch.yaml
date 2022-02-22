@@ -18,6 +18,7 @@ jobs:
           echo $branch_name 
           echo "${GITHUB_REF}"
           base=${GITHUB_REF}
+          echo $base
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
          PR: ${{ github.event.number }}
