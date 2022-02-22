@@ -29,12 +29,12 @@ jobs:
             exit 0
           fi
           echo $target
-          temp_branch="merge_${base}_${target}_${pr_number}"
+          temp_branch="merge_${base}_${target}_$PR"
           echo $temp_branch
-
-
-
-
+          git fetch origin "$target"
+          git checkout -b "$temp_branch" "origin/$target"
+          c_branch_name=$(gh pr view  $PR --jq=.headRefName --json=headRefName)
+          echo $c_branch_name
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
          PR: ${{ github.event.number }}
