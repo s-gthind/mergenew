@@ -14,11 +14,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: echo_trigger_event
         run: |
-          branch_name=$(gh pr view  $PR --jq=.headRefName --json=headRefName)
-          echo $branch_name 
-          echo "${GITHUB_REF}"
           base=${GITHUB_REF}
-          echo $base
 
           if [[ "$base" == release_candidate ]]
           then
@@ -28,15 +24,13 @@ jobs:
             target=develop
           else
             exit 0
-          fi
-          echo $target
 
           temp_branch="merge_${base}_${target}_$PR"
-          echo $temp_branch
 
           git fetch origin "$target"
 
           git checkout -b "$temp_branch" "origin/$target"
+          
 
           conflicts=$(git merge origin/$base | grep CONFLICT| wc -l)
           if [ "$conflicts" -gt 0 ]
@@ -44,7 +38,9 @@ jobs:
             gh pr comment "$PR" --body "There are conflicts while merging the $base down to $target. Please resolve the conflicts manually. "
           else
             git push origin "${temp_branch}:${temp_branch}"
+            gh pr create --title "Merge $base down to $target" --body "Automated action for Merging down" -B "$target"
           fi
+
  
 
         env:
